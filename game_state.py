@@ -1,4 +1,5 @@
 import pygame as p
+import globals
 import pawn
 import knight
 import bishop
@@ -6,10 +7,6 @@ import rook
 import queen
 import king
 
-SQ_SIZE = 64
-white_pov = True
-light_square_color = "ivory"  # TODO more colors
-dark_square_color = "dark green"
 
 # square class for composing board layout
 class Square:
@@ -18,24 +15,23 @@ class Square:
         self.col = col  # 0-7
         self.piece = piece  # piece object instance
         self.color = "l" if (row % 2 == 0) == (col % 2 == 0) else "d"  # light if row/col are both even/odd else dark
-        self.visual_row = row if white_pov else 7 - row  # visual row 0-7
-        self.visual_col = col if white_pov else 7 - row  # visual col 0-7
-        self.x = self.visual_col * SQ_SIZE  # pygame draw x
-        self.y = self.visual_row * SQ_SIZE  # pygame draw y
+        self.visual_row = row if globals.WHITE_POV else 7 - row  # visual row 0-7
+        self.visual_col = col if globals.WHITE_POV else 7 - col  # visual col 0-7
+        self.x = self.visual_col * globals.SQ_SIZE  # pygame draw x
+        self.y = self.visual_row * globals.SQ_SIZE  # pygame draw y
 
     def __repr__(self):
         return f"Square({self.row}, {self.col}, {self.piece}"
 
-    def location(self):
+    def get_location(self):
         location = (self.row, self.col)
         return location
 
     def draw_square(self, screen):
-        from main import IMAGES
-        color = light_square_color if self.color == "l" else dark_square_color
-        p.draw.rect(screen, color, p.Rect(self.x, self.y, SQ_SIZE, SQ_SIZE))
+        color = globals.LIGHT_SQUARE_COLOR if self.color == "l" else globals.DARK_SQUARE_COLOR
+        p.draw.rect(screen, color, p.Rect(self.x, self.y, globals.SQ_SIZE, globals.SQ_SIZE))
         if self.piece != 0:
-            screen.blit(IMAGES[str(self.piece)], p.Rect(self.x, self.y, SQ_SIZE, SQ_SIZE))
+            screen.blit(globals.IMAGES[str(self.piece)], p.Rect(self.x, self.y, globals.SQ_SIZE, globals.SQ_SIZE))
 
 
 class GameState:
