@@ -1,11 +1,5 @@
 import pygame as p
 import globals
-import pawn
-import knight
-import bishop
-import rook
-import queen
-import king
 
 algebraic = [["a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"],
              ["a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"],
@@ -60,7 +54,13 @@ class GameState:
                       [a3, b3, c3, d3, e3, f3, g3, h3],
                       [a2, b2, c2, d2, e2, f2, g2, h2],
                       [a1, b1, c1, d1, e1, f1, g1, h1]]
-        self.white_to_move = True
+
+        self.FEN = ""
+        self.color_to_move = ""
+        self.castling_rights = ""
+        self.en_passant_square = ""
+        self.half_moves = ""
+        self.full_moves = ""
 
     # iterate through each square on the board and print it
     def draw_board(self, screen):
@@ -87,6 +87,7 @@ class GameState:
     # this function will read in a string from the engine API and set the pieces on the board accordingly
     # FEN will be normal format e.g. "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" is the start position
     def parse_FEN(self, FEN):
+        self.FEN = FEN
         FEN = FEN.replace("/", "")
         FEN = FEN.split(" ")
 
@@ -101,8 +102,12 @@ class GameState:
                 elif char in ["1", "2", "3", "4", "5", "6", "7", "8"]:
                     index += int(char) - 1
 
-        # set color to move
-        self.white_to_move = True if FEN[1] == "w" else False
+        # set game state vars
+        self.color_to_move = FEN[1]
+        self.castling_rights = FEN[2]
+        self.en_passant_square = FEN[3]
+        self.half_moves = FEN[4]
+        self.full_moves = FEN[5]
 
     # takes a piece (fen str) and index (0-63) and puts it on the approrpiate square
     def set_piece(self, piece, index):

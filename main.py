@@ -6,12 +6,10 @@ from game_state import GameState
 import setup
 import globals
 
-# init pygame and constants
-p.init()
-
 
 # main function contains setup and game loop
 def main():
+    p.init()
     p.display.set_caption('Chess 9000')
     screen = p.display.set_mode((globals.BOARD_WIDTH, globals.BOARD_HEIGHT))
     clock = p.time.Clock()
@@ -19,8 +17,6 @@ def main():
     square_selected = None
     player_clicks = []
     setup.load_images('standard')  # TODO add config options
-
-    print(gs.parse_FEN(globals.EMPTY_BOARD))
 
     # game loop
     running = True
