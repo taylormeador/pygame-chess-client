@@ -20,10 +20,10 @@ def main():
     player_clicks = []
     setup.load_images('standard')  # TODO add config options
 
-    print(gs.generate_FEN())
+    print(gs.parse_FEN(globals.EMPTY_BOARD))
 
     # game loop
-    running = False
+    running = True
     while running:
         for e in p.event.get():
             # quit condition
