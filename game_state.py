@@ -1,5 +1,15 @@
+import pygame as p
+import pawn
+import knight
+import bishop
+import rook
+import queen
+import king
+
 SQ_SIZE = 64
 white_pov = True
+light_square_color = "ivory"  # TODO more colors
+dark_square_color = "dark green"
 
 # square class for composing board layout
 class Square:
@@ -12,7 +22,6 @@ class Square:
         self.visual_col = col if white_pov else 7 - row  # visual col 0-7
         self.x = self.visual_col * SQ_SIZE  # pygame draw x
         self.y = self.visual_row * SQ_SIZE  # pygame draw y
-        self.is_attacked = []  # list of pieces that are attacking the square
 
     def __repr__(self):
         return f"Square({self.row}, {self.col}, {self.piece}"
@@ -21,21 +30,33 @@ class Square:
         location = (self.row, self.col)
         return location
 
+    def draw_square(self, screen):
+        from main import IMAGES
+        color = light_square_color if self.color == "l" else dark_square_color
+        p.draw.rect(screen, color, p.Rect(self.x, self.y, SQ_SIZE, SQ_SIZE))
+        if self.piece != 0:
+            screen.blit(IMAGES[str(self.piece)], p.Rect(self.x, self.y, SQ_SIZE, SQ_SIZE))
+
 
 class GameState:
     def __init__(self):
         # the board will always be represented internally with white being at the bottom of the board
-        self.board = [[square.a8, square.b8, square.c8, square.d8, square.e8, square.f8, square.g8, square.h8],
-                      [square.a7, square.b7, square.c7, square.d7, square.e7, square.f7, square.g7, square.h7],
-                      [square.a6, square.b6, square.c6, square.d6, square.e6, square.f6, square.g6, square.h6],
-                      [square.a5, square.b5, square.c5, square.d5, square.e5, square.f5, square.g5, square.h5],
-                      [square.a4, square.b4, square.c4, square.d4, square.e4, square.f4, square.g4, square.h4],
-                      [square.a3, square.b3, square.c3, square.d3, square.e3, square.f3, square.g3, square.h3],
-                      [square.a2, square.b2, square.c2, square.d2, square.e2, square.f2, square.g2, square.h2],
-                      [square.a1, square.b1, square.c1, square.d1, square.e1, square.f1, square.g1, square.h1]]
-        self.white_to_move = True
+        self.board = [[a8, b8, c8, d8, e8, f8, g8, h8],
+                      [a7, b7, c7, d7, e7, f7, g7, h7],
+                      [a6, b6, c6, d6, e6, f6, g6, h6],
+                      [a5, b5, c5, d5, e5, f5, g5, h5],
+                      [a4, b4, c4, d4, e4, f4, g4, h4],
+                      [a3, b3, c3, d3, e3, f3, g3, h3],
+                      [a2, b2, c2, d2, e2, f2, g2, h2],
+                      [a1, b1, c1, d1, e1, f1, g1, h1]]
         self.ally_color = 'w'  # white
         self.enemy_color = 'b'  # black
+
+    # iterate through each square on the board and print it
+    def draw_board(self, screen):
+        for row in range(8):
+            for col in range(8):
+                self.board[row][col].draw_square(screen)
 
 
 # initialize squares

@@ -5,8 +5,6 @@ class Rook:
         self.name = self.color + self.piece_type  # e.g. 'wR'
         self.row = row  # 0-7
         self.col = col  # 0-7
-        self.is_attacking = []  # list of square location a piece attacks [(0, 1), (1, 0), etc]
-        self.first_move = True  # helps determine castling rights
 
     def __str__(self):
         return self.name  # 'wR' or 'bR'
