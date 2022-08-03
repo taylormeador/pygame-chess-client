@@ -7,6 +7,15 @@ import rook
 import queen
 import king
 
+algebraic = [["a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"],
+             ["a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"],
+             ["a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6"],
+             ["a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5"],
+             ["a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4"],
+             ["a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3"],
+             ["a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"],
+             ["a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1"]]
+
 
 # square class for composing board layout
 class Square:
@@ -21,11 +30,14 @@ class Square:
         self.y = self.visual_row * globals.SQ_SIZE  # pygame draw y
 
     def __repr__(self):
-        return f"Square({self.row}, {self.col}, {self.piece}"
+        return f"{self.get_algebraic()}: Square({self.row}, {self.col}, {self.piece})"
 
     def get_location(self):
         location = (self.row, self.col)
         return location
+
+    def get_algebraic(self):
+        return algebraic[self.row][self.col]
 
     def draw_square(self, screen):
         color = globals.LIGHT_SQUARE_COLOR if self.color == "l" else globals.DARK_SQUARE_COLOR
@@ -47,12 +59,36 @@ class GameState:
                       [a1, b1, c1, d1, e1, f1, g1, h1]]
         self.ally_color = 'w'  # white
         self.enemy_color = 'b'  # black
+        self.FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
     # iterate through each square on the board and print it
     def draw_board(self, screen):
         for row in range(8):
             for col in range(8):
                 self.board[row][col].draw_square(screen)
+
+    # generate FEN string of current game state
+    def generate_FEN(self):
+        FEN = ""
+        for row in range(8):
+            for col in range(8):
+                piece = self.board[row][col].piece
+                if piece:
+                    FEN += piece.fen_piece
+                else:
+                    look_ahead = 0
+                    while True:  # keep looking until you find a piece or run out of columns
+                        look_ahead += 1
+                        if look_ahead + col < 8:  # make sure we are still in the row
+                            piece = self.board[row][col + look_ahead].piece
+                            if piece:  # piece found
+                                FEN += str(look_ahead)
+                                break
+                        else:
+                            FEN += str(look_ahead)
+                            break
+            FEN += "/"
+        return FEN
 
 
 # initialize squares

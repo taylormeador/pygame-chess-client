@@ -3,6 +3,7 @@ class Pawn:
         self.color = color
         self.piece_type = 'P'
         self.name = self.color + self.piece_type
+        self.fen_piece = 'P' if color == "w" else 'p'
         self.row = row
         self.col = col
 

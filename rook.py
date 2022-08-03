@@ -3,6 +3,7 @@ class Rook:
         self.color = color  # 'w' or 'b'
         self.piece_type = 'R'
         self.name = self.color + self.piece_type  # e.g. 'wR'
+        self.fen_piece = 'R' if color == "w" else 'r'
         self.row = row  # 0-7
         self.col = col  # 0-7
 

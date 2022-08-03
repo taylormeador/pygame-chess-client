@@ -3,6 +3,7 @@ class Knight:
         self.color = color
         self.piece_type = 'N'
         self.name = self.color + self.piece_type
+        self.fen_piece = 'R' if color == "w" else 'r'
         self.row = row
         self.col = col
         self.is_attacking = []

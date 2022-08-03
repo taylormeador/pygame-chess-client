@@ -3,6 +3,7 @@ class King:
         self.color = color
         self.piece_type = 'K'
         self.name = self.color + self.piece_type
+        self.fen_piece = 'K' if color == "w" else 'k'
         self.row = row
         self.col = col
 

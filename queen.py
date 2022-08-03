@@ -3,6 +3,7 @@ class Queen:
         self.color = color
         self.piece_type = 'Q'
         self.name = self.color + self.piece_type
+        self.fen_piece = 'Q' if color == "w" else 'q'
         self.row = row
         self.col = col
 
