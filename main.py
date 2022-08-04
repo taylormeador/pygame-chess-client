@@ -39,10 +39,7 @@ def main():
                     player_clicks.append(square_selected)  # appends for both 1st or 2nd click
                 if len(player_clicks) == 2:  # after second click
                     move = player_clicks[0].get_algebraic() + player_clicks[1].get_algebraic()
-                    if api.is_legal(move):
-                        print("move is legal")
-                    else:
-                        print("move is not legal")
+                    api.is_legal(move)
                     square_selected = None  # deselect
                     player_clicks = []  # clear player_clicks
 

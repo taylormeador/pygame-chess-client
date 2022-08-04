@@ -9,9 +9,6 @@ BEST_MOVE_URL = API_URL + "/findBestMove?"
 # move should be a string in the format e2e4, b7b8q, g1f3, etc.
 def is_legal(move):
     args = {"FEN": f"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 moves {move}"}
-    print(args)
+    r = requests.get(url=IS_LEGAL_URL, params=args)
+    print(r.json())
     return True
-
-    # r = requests.get(url=IS_LEGAL_URL, params=args)
-    # data = r.json()
-    # print(data)
