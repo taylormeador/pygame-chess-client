@@ -14,6 +14,7 @@ def main():
     screen = p.display.set_mode((globals.BOARD_WIDTH, globals.BOARD_HEIGHT))
     clock = p.time.Clock()
     gs = GameState()
+    gs.parse_FEN(globals.START_POSITION)
     square_selected = None
     player_clicks = []
     setup.load_images('standard')  # TODO add config options
@@ -39,16 +40,16 @@ def main():
                     player_clicks.append(square_selected)  # appends for both 1st or 2nd click
                 if len(player_clicks) == 2:  # after second click
                     move = player_clicks[0].get_algebraic() + player_clicks[1].get_algebraic()
-                    api.is_legal(move)
+                    FEN = gs.FEN + " moves " + move
+                    gs.parse_FEN(api.is_legal(FEN))
                     square_selected = None  # deselect
                     player_clicks = []  # clear player_clicks
 
         gs.draw_board(screen)
-
         p.display.flip()
         clock.tick(globals.MAX_FPS)
 
-    p.quit()  # quits pygame
+    p.quit()
     sys.exit()
 
 

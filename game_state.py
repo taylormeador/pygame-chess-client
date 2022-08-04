@@ -62,6 +62,12 @@ class GameState:
         self.half_moves = ""
         self.full_moves = ""
 
+    # delete all pieces from board
+    def empty_board(self):
+        for row in range(8):
+            for col in range(8):
+                self.board[row][col].piece = "-"
+
     # iterate through each square on the board and print it
     def draw_board(self, screen):
         for row in range(8):
@@ -87,6 +93,7 @@ class GameState:
     # this function will read in a string from the engine API and set the pieces on the board accordingly
     # FEN will be normal format e.g. "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" is the start position
     def parse_FEN(self, FEN):
+        self.empty_board()
         self.FEN = FEN
         FEN = FEN.replace("/", "")
         FEN = FEN.split(" ")
