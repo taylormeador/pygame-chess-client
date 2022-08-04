@@ -6,6 +6,7 @@ IMAGES = {}
 WHITE_POV = True
 LIGHT_SQUARE_COLOR = "ivory"  # TODO more colors
 DARK_SQUARE_COLOR = "dark green"
+HIGHLIGHT_COLOR = "yellow"
 FEN_PIECES = ["P", "N", "B", "R", "Q", "K", "p", "n", "b", "r", "q", "k"]
 EMPTY_BOARD = "8/8/8/8/8/8/8/8 w - - 0 1"
 START_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"

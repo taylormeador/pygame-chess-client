@@ -25,6 +25,7 @@ class Square:
         self.visual_col = col if globals.WHITE_POV else 7 - col  # visual col 0-7
         self.x = self.visual_col * globals.SQ_SIZE  # pygame draw x
         self.y = self.visual_row * globals.SQ_SIZE  # pygame draw y
+        self.highlight = False
 
     def __repr__(self):
         return f"{self.get_algebraic()}: Square({self.row}, {self.col}, {self.piece})"
@@ -38,6 +39,8 @@ class Square:
 
     def draw_square(self, screen):
         color = globals.LIGHT_SQUARE_COLOR if self.color == "l" else globals.DARK_SQUARE_COLOR
+        if self.highlight:
+            color = "goldenrod1"
         p.draw.rect(screen, color, p.Rect(self.x, self.y, globals.SQ_SIZE, globals.SQ_SIZE))
         if self.piece != "-":
             screen.blit(globals.IMAGES[fen_to_image_name[self.piece]], p.Rect(self.x, self.y, globals.SQ_SIZE, globals.SQ_SIZE))
