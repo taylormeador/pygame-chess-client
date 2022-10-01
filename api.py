@@ -1,8 +1,9 @@
 import requests
+import globals
 
 API_URL = "http://go-chess-api.herokuapp.com"
 IS_LEGAL_URL = API_URL + "/isLegal?"
-BEST_MOVE_URL = API_URL + "/findBestMove?"
+BEST_MOVE_URL = API_URL + "/bestMove?"
 
 
 # sends a request to the engine to determine if the given move is legal
@@ -12,4 +13,12 @@ def is_legal(FEN):
     r = requests.get(url=IS_LEGAL_URL, params=args)
     response = r.json()['FEN']
     print(f"API isLegal response: {response}")
+    return response
+
+# sends a request to the engine to determine the best move in the position
+def best_move(FEN):
+    args = {"FEN": FEN}
+    r = requests.get(url=BEST_MOVE_URL, params=args)
+    response = r.json()['FEN']
+    print(f"API bestMove response: {response}")
     return response

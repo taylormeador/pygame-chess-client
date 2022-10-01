@@ -75,7 +75,10 @@ class GameState:
     def draw_board(self, screen):
         for row in range(8):
             for col in range(8):
-                self.board[row][col].draw_square(screen)
+                if globals.WHITE_POV:
+                    self.board[row][col].draw_square(screen)
+                else:
+                    self.board[7 - row][7 - col].draw_square(screen)
 
     # generate FEN string of current game state
     # TODO rest of FEN string
