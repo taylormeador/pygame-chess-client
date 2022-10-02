@@ -21,14 +21,28 @@ class Square:
         self.col = col  # 0-7
         self.piece = piece  # fen piece e.g. white pawn = "P", black queen = "q"
         self.color = "l" if (row % 2 == 0) == (col % 2 == 0) else "d"  # light if row/col are both even/odd else dark
-        self.visual_row = row if globals.WHITE_POV else 7 - row  # visual row 0-7
-        self.visual_col = col if globals.WHITE_POV else 7 - col  # visual col 0-7
-        self.x = self.visual_col * globals.SQ_SIZE  # pygame draw x
-        self.y = self.visual_row * globals.SQ_SIZE  # pygame draw y
         self.highlight = False
 
     def __repr__(self):
         return f"{self.get_algebraic()}: Square({self.row}, {self.col}, {self.piece})"
+
+    @property
+    def visual_row(self):
+        visual_row = self.row if globals.WHITE_POV else 7 - self.row
+        return visual_row
+
+    @property
+    def visual_col(self):
+        visual_col = self.col if globals.WHITE_POV else 7 - self.col  # visual col 0-7
+        return visual_col
+
+    @property
+    def x(self):
+        return self.visual_col * globals.SQ_SIZE  # pygame draw x
+
+    @property
+    def y(self):
+        return self.visual_row * globals.SQ_SIZE  # pygame draw y
 
     def get_location(self):
         location = (self.row, self.col)
@@ -75,10 +89,7 @@ class GameState:
     def draw_board(self, screen):
         for row in range(8):
             for col in range(8):
-                if globals.WHITE_POV:
-                    self.board[row][col].draw_square(screen)
-                else:
-                    self.board[7 - row][7 - col].draw_square(screen)
+                self.board[row][col].draw_square(screen)
 
     # generate FEN string of current game state
     # TODO rest of FEN string

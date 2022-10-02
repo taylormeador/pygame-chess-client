@@ -6,6 +6,7 @@ from game_state import GameState
 import setup
 import globals
 import time
+from input_output import click_col_row
 
 game_config = setup.Config()
 
@@ -96,9 +97,7 @@ def main():
             # mouse handler
             elif e.type == p.MOUSEBUTTONDOWN:
                 if player_turn:
-                    location = p.mouse.get_pos()  # (x, y) of mouse click position
-                    col = location[0] // globals.SQ_SIZE  # get column number from location
-                    row = location[1] // globals.SQ_SIZE  # get row number from location
+                    col, row = click_col_row(p.mouse.get_pos())
                     if square_selected == gs.board[row][col]:  # if the player selects the same square twice
                         square_selected = None  # deselect
                         gs.board[row][col].highlight = False  # remove highlight
@@ -127,10 +126,12 @@ def main():
         p.display.flip()
         clock.tick(globals.MAX_FPS)
 
+        # computer move
         if not player_turn:
             newFEN = api.best_move(gs.FEN)
-            time.sleep(1)
             gs.parse_FEN(newFEN)
+
+        # update player_turn
         player_turn = True if ((gs.color_to_move == "w" and game_config.white_is_human) or (
                     gs.color_to_move == "b" and game_config.black_is_human)) else False
 
