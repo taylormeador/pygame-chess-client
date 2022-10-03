@@ -81,7 +81,7 @@ def main():
     screen = p.display.set_mode((globals.BOARD_WIDTH, globals.BOARD_HEIGHT))
     clock = p.time.Clock()
     gs = GameState()
-    gs.parse_FEN(globals.START_POSITION)
+    gs.parse_FEN(globals.STALEMATE_POSITION)
     square_selected = None
     player_clicks = []
     setup.load_images('standard')  # TODO add config options
@@ -116,7 +116,9 @@ def main():
                     if len(player_clicks) == 2:  # after second click
                         move = player_clicks[0].get_algebraic() + player_clicks[1].get_algebraic()
                         FEN = gs.FEN + " moves " + move
+                        print("FEN: ", gs.FEN)
                         newFEN = api.is_legal(FEN)
+                        print("newFEN: ", newFEN)
                         gs.parse_FEN(newFEN)
                         player_clicks[0].highlight, player_clicks[1].highlight = False, False
                         square_selected = None  # deselect
@@ -128,8 +130,11 @@ def main():
 
         # computer move
         if not player_turn:
-            newFEN = api.best_move(gs.FEN)
-            gs.parse_FEN(newFEN)
+            response = api.best_move(gs.FEN)
+            if response['Checkmate'] or response['Stalemate']:
+                print('game over')  # TODO
+                running = False
+                gs.parse_FEN(response['FEN'])
 
         # update player_turn
         player_turn = True if ((gs.color_to_move == "w" and game_config.white_is_human) or (

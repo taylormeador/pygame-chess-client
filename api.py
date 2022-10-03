@@ -19,6 +19,8 @@ def is_legal(FEN):
 def best_move(FEN):
     args = {"FEN": FEN}
     r = requests.get(url=BEST_MOVE_URL, params=args)
-    response = r.json()['FEN']
-    print(f"API bestMove response: {response}")
-    return response
+    new_fen = r.json()['FEN']
+    checkmate = r.json()['Checkmate']
+    stalemate = r.json()['Stalemate']
+    print(f"API bestMove response: {new_fen}, Checkmate: {checkmate}, Stalemate: {stalemate}")
+    return r.json()
